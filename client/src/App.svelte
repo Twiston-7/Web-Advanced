@@ -1,10 +1,10 @@
 <script>
-  import logo from './assets/svelte.png'
   import router from 'page';
 
   import Home from "./pages/Home.svelte";
   import About from "./pages/About.svelte";
   import Header from "./components/Header.svelte";
+  import Ad from "./components/Ad.svelte";
 
   let page;
   let params;
@@ -23,9 +23,9 @@
 </script>
 
 <main>
-  <img src={logo} alt="Svelte Logo" />
   <Header active={currentRoute} />
   <svelte:component this={page} {params} />
+  <Ad />
 </main>
 
 <style>

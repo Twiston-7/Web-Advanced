@@ -1,0 +1,35 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: Web Advanced
+  description: The API specification for Web Advanced class
+paths:
+ /auctions:
+  get:
+    description: Returns all auctions
+    responses:
+      '200':
+        description: Successful response
+      '500':
+        description: Server error
+    post:
+      description: Adds an auction
+      responses:
+        '200':
+          description: Successful response
+        '403':
+          description: No access to add an auction
+        '400':
+          description: Invalid input information
+        '500':
+          description: Server error
+    delete:
+      description:
+        '200':
+          description: Successful response
+        '403':
+          description: No access to delete an auction
+        '400':
+          description: Auction does not exist
+        '500':
+          description: Server error

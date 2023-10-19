@@ -97,9 +97,9 @@ the assignment. You can use some default images for the items.
 
 ### Login
 
-![](assets/login.jpeg)
+![](assets/loginController.jpeg)
 
-The login page should allow the user to log in.
+The loginController page should allow the user to log in.
 
 ### Register
 
