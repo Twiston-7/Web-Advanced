@@ -1,9 +1,9 @@
 import fs from "fs";
 import jwt from "jsonwebtoken";
 
-const privateKey = fs.readFileSync('../data/private-key.pem', 'utf8');
+const privateKey = fs.readFileSync('./src/data/private-key.pem', 'utf8');
 
-const authenticateAdmin = (req, res, next) => {
+export const authenticateAdmin = (req, res, next) => {
     const token = req.headers.authorization; // Assuming the token is sent in the 'Authorization' header
 
     if (!token) {
@@ -27,7 +27,7 @@ const authenticateAdmin = (req, res, next) => {
     });
 };
 
-const authenticateUser = (req, res, next) => {
+export const authenticateUser = (req, res, next) => {
     const token = req.headers.token; // Assuming the token is sent in the 'Authorization' header
 
     if (!token) {
@@ -42,8 +42,3 @@ const authenticateUser = (req, res, next) => {
         req.headers.user = decoded;
     });
 };
-
-module.exports = {
-    authenticateAdmin,
-    authenticateUser,
-}

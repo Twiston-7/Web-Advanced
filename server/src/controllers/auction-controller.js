@@ -1,6 +1,6 @@
-import db from "../data/database.js"
+import * as db from "../data/database.js"
 
-const getAllAuctions = async (req, res) => {
+export const getAllAuctions = async (req, res) => {
     const auctions = await db.getAllAuctions();
 
     if (!auctions) {
@@ -14,7 +14,7 @@ const getAllAuctions = async (req, res) => {
         .json(JSON.stringify(auctions));
 }
 
-const getAuctionById = async (req, res) => {
+export const getAuctionById = async (req, res) => {
     const auction = db.getAuctionById(req.id);
 
     if (!auction) {
@@ -26,9 +26,4 @@ const getAuctionById = async (req, res) => {
     res
         .status(200)
         .json(JSON.stringify(auction));
-}
-
-module.exports = {
-    getAllAuctions,
-    getAuctionById,
 }

@@ -1,6 +1,6 @@
 import express from 'express';
-import controller from "../controllers/user-controller.js";
-import authenticate from "../controllers/authenticate-logged-in.js";
+import * as controller from "../controllers/user-controller.js";
+import * as authenticate from "../controllers/authenticate-logged-in.js";
 
 const router = express.Router();
 

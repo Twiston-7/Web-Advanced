@@ -180,3 +180,185 @@ paths:
           description: List of items with user's bids
         '401':
           description: User not logged in
+openapi: 3.0.0
+info:
+  title: Auction Site API
+  version: 1.0.0
+  description: API for managing an auction site.
+
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: User registration successful
+        '400':
+          description: Invalid input or duplicate email
+
+  /api/auth/login:
+    post:
+      summary: Authenticate a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User authenticated, return an access token
+        '401':
+          description: Authentication failed
+
+  /api/auction-items:
+    get:
+      summary: Get a list of auctionable products or services
+      parameters:
+        - name: type
+          in: query
+          description: Type of item
+          schema:
+            type: string
+        - name: minPrice
+          in: query
+          description: Minimum price
+          schema:
+            type: integer
+        - name: maxPrice
+          in: query
+          description: Maximum price
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of auction items
+
+  /api/auction-items/{id}:
+    get:
+      summary: Get details of a specific auction item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Details of the auction item
+        '404':
+          description: Item not found
+
+  /api/auction-items/{id}/bid:
+    post:
+      summary: Place a bid on a specific auction item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bidAmount:
+                  type: integer
+      responses:
+        '201':
+          description: Bid placed successfully
+        '400':
+          description: Invalid bid amount
+        '401':
+          description: User not logged in
+
+  /api/admin/auction-items:
+    post:
+      summary: Create a new auction item (Admin only)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                price:
+                  type: integer
+                attributes:
+                  type: object
+      responses:
+        '201':
+          description: Auction item created
+        '401':
+          description: User not authorized
+
+  /api/admin/auction-items/{id}:
+    put:
+      summary: Update an existing auction item (Admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                price:
+                  type: integer
+                attributes:
+                  type: object
+      responses:
+        '200':
+          description: Auction item updated
+        '401':
+          description: User not authorized
+        '404':
+          description: Item not found
+
+    delete:
+      summary: Delete an auction item (Admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Auction item deleted
+        '401':
+          description: User not authorized
+        '404':
+          description: Item not found
+
+  /api/user/bids:
+    get:
+      summary: Get a list of items the user has placed bids on
+      responses:
+        '200':
+          description: List of items with user's bids
+        '401':
+          description: User not logged in

@@ -1,11 +1,10 @@
-const bcrypt = require("bcrypt");
-const auctionsRouter = require("../routes/auctions-router.js");
+import bcrypt from "bcrypt";
 
 // Fake database
 const users = [];
 const auctions = [];
 
-const addUser = async (firstName, lastName, username, email, password) => {
+export async function addUser(firstName, lastName, username, email, password) {
     // Hash and salt the password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -24,7 +23,7 @@ const addUser = async (firstName, lastName, username, email, password) => {
     users.push(user);
 }
 
-const addAdmin = async (firstName, lastName, username, email, password) => {
+export async function addAdmin(firstName, lastName, username, email, password) {
     // Hash and salt the password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -42,13 +41,13 @@ const addAdmin = async (firstName, lastName, username, email, password) => {
     users.push(user);
 }
 
-const findUser = (usernameOrEmail) => {
-    return users.find (
+export function findUser(usernameOrEmail) {
+    return users.find(
         (user) => user.username === usernameOrEmail || user.email === usernameOrEmail
     );
 }
 
-const getUserBids = async (user) => {
+export async function getUserBids(user) {
     const bids = [];
 
     for (let i = 0; i < auctions.length; i++) {
@@ -62,44 +61,44 @@ const getUserBids = async (user) => {
     return bids;
 }
 
-const addAuction = async (auction) => {
-    auctions.push(auction)
+export async function addAuction(auction) {
+    auctions.push(auction);
 }
 
-const deleteAuction = async (auctionId) => {
+export async function deleteAuction(auctionId) {
     for (let i = 0; i < auctions.length; i++) {
         if (auctions[i].id === auctionId) {
             auctions.splice(i, 1); // Remove the auction at index i
-            return true; // Return true if auction was removed
+            return true; // Return true if the auction was removed
         }
     }
 
-    return false; // Return false if auction was not found.
+    return false; // Return false if the auction was not found.
 }
 
-const editAuction = async (auctionId, newAuction) => {
+export async function editAuction(auctionId, newAuction) {
     for (let i = 0; i < auctions.length; i++) {
         if (auctions[i].id === auctionId) {
             auctions[i] = newAuction;
-            return true; // Return true if auction got replaced
+            return true; // Return true if the auction got replaced
         }
     }
 
-    // Return false if auction not found
+    // Return false if the auction was not found
     return false;
 }
 
-const getAllAuctions = async () => {
+export async function getAllAuctions() {
     return auctions;
 }
 
-const getAuctionById = async (auctionId) => {
-    return auctions.find (
+export async function getAuctionById(auctionId) {
+    return auctions.find(
         (auction) => auction.id === auctionId
     );
 }
 
-const addAuctionBid = async (user, auctionId, bid) => {
+export async function addAuctionBid(user, auctionId, bid) {
     let auction;
 
     for (let i = 0; i < auctions.length; i++) {
@@ -122,39 +121,15 @@ const addAuctionBid = async (user, auctionId, bid) => {
     return false; // Return false if the auction was not found.
 }
 
-const getNextAuctionId = () => {
+export function getNextAuctionId() {
     return auctions.length;
 }
 
-const checkAuctionIdExists = (id) => {
-    const auction = auctions.find (
+export function checkAuctionIdExists(id) {
+    const auction = auctions.find(
         (auction) => auction.id === id
     );
 
-    // Return true if auction exists, return false if not.
+    // Return true if the auction exists, return false if not.
     return auction !== undefined;
 }
-
-module.exports = {
-    // User management functions
-    addUser,
-    addAdmin,
-    findUser,
-
-    // User functions
-    getUserBids,
-    addAuctionBid,
-
-    // Admin functions
-    addAuction,
-    deleteAuction,
-    editAuction,
-
-    // Auction functions
-    getAllAuctions,
-    getAuctionById,
-
-    // Helper functions
-    getNextAuctionId,
-    checkAuctionIdExists,
-};

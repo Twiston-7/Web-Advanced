@@ -1,5 +1,5 @@
-import db from "../data/database.js";
-const placeBid = async (req, res) => {
+import * as db from "../data/database.js";
+export const placeBid = async (req, res) => {
     // User is already authenticated. To be authenticated the user obviously has to exist.
     const user = req.headers.user
     const auctionId = req.body.auctionId;
@@ -48,7 +48,7 @@ const placeBid = async (req, res) => {
     }
 }
 
-const getBidsForUser = async (req, res) => {
+export const getBidsForUser = async (req, res) => {
     // User is already authenticated. To be authenticated the user obviously has to exist.
     const user = req.headers.user
 
@@ -70,9 +70,4 @@ const getBidsForUser = async (req, res) => {
             .status(500)
             .json({ message: "An internal server error occurred" })
     }
-}
-
-module.exports = {
-    placeBid,
-    getBidsForUser,
 }

@@ -1,11 +1,11 @@
-import db from "../data/database.js";
+import * as db from "../data/database.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 
-const privateKey = fs.readFileSync('../data/private-key.pem', 'utf8');
+const privateKey = fs.readFileSync('./src/data/private-key.pem', 'utf8');
 
-const registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
     const { firstName, lastName, username, email, password } = req.body;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+/;
@@ -49,7 +49,7 @@ const registerUser = async (req, res) => {
 
 // A bit of a lazy method, just copied the user and used registerAdmin in db (which I also copied from the addUser)
 // Since usually I'd just manually run a sql command to register an admin.
-const registerAdmin = async (req, res) => {
+export const registerAdmin = async (req, res) => {
     const { firstName, lastName, username, email, password } = req.body;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+/;
@@ -89,9 +89,4 @@ const registerAdmin = async (req, res) => {
         console.error(error);
         res.status(500).send("Internal server error. Please try again.");
     }
-};
-
-module.exports = {
-    registerUser,
-    registerAdmin,
 };

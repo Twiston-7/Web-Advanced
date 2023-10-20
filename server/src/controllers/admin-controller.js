@@ -1,6 +1,6 @@
-import db from "../data/database.js"
+import * as db from "../data/database.js"
 
-const addAuction = async (req, res) => {
+export const addAuction = async (req, res) => {
     // Validate input
     const {item, description, images} = req.body;
 
@@ -69,7 +69,7 @@ const addAuction = async (req, res) => {
         .json(JSON.stringify(jsonObject));
 }
 
-const editAuction = async (req, res) => {
+export const editAuction = async (req, res) => {
     const id = req.id;
 
     // Check if id is valid
@@ -142,7 +142,7 @@ const editAuction = async (req, res) => {
         .json(JSON.stringify(jsonObject))
 }
 
-const deleteAuction = async (req, res) => {
+export const deleteAuction = async (req, res) => {
     // Validate input
     const id = req.id;
 
@@ -179,10 +179,4 @@ const deleteAuction = async (req, res) => {
             message: "Auction has been deleted successfully. ",
             id: id
         })
-}
-
-module.exports = {
-    addAuction,
-    editAuction,
-    deleteAuction,
 }

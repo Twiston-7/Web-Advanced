@@ -1,11 +1,11 @@
 import fs from "fs";
-import db from "../data/database.js";
+import * as db from "../data/database.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const privateKey = fs.readFileSync('../data/private-key.pem', 'utf8');
+const privateKey = fs.readFileSync('./src/data/private-key.pem', 'utf8');
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
     const {username, password} = req.body;
 
     if (!username || !password) {
@@ -31,7 +31,3 @@ const login = async (req, res) => {
         .status(200)
         .json({message: "Login successful", token: token});
 }
-
-module.exports = {
-    login,
-};

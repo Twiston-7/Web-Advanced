@@ -1,4 +1,5 @@
 import express from 'express';
+import os from 'os';
 const app = express()
 const port = 3000
 
@@ -8,13 +9,14 @@ import user from "./routes/user-router.js";
 import login from "./routes/login-router.js"
 import register from "./routes/register-router.js"
 
-import db from "./data/database.js";
+import * as db from "./data/database.js";
 
-// Create an admin user.
+// Create test admin.
 const createAdmin = () => {
     db.addAdmin("Generic", "User", "User", "genericuser@gmail.com", "ImNotIntoSecuritySoIUseABadPassword")
 }
 
+// Create test user
 const createUser = () => {
     db.addUser("Admin", "", "Admin", "root@domain.com", "Str0ngP4sswurds4Life")
 }
@@ -34,10 +36,12 @@ app.use("/login", login);
 app.use("/register", register);
 
 app.get('/', (req, res, next) => {
+    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+
     res
         .status(403)
         .json({
-            message: "Forbidden. "
+            message: "Forbidden. You will now be reported to the fbi with ip " + clientIp
         });
 })
 
