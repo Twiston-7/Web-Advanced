@@ -5,6 +5,10 @@
 
 <div class="wrapper">
     <nav class="navbar">
+        <a href="/">
+            <img src="../img/logo.png" alt="Logo" />
+        </a>
+
         <ul class="nav-list">
             {#if isLoggedIn}
                 <li class="nav-item">
