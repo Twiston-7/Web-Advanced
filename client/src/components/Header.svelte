@@ -1,13 +1,44 @@
 <script>
     export let active;
     export let isLoggedIn = false;
+
+    const isJwtValid = () => {
+        const token = localStorage.getItem('token');
+
+        if (token === null) {
+            return false;
+        }
+
+        try {
+            const decodedToken = JSON.parse(atob(token.split('.')[1]));
+            const currentTimestamp = Math.floor(Date.now() / 1000);
+
+            // Check if the token has not expired
+            if (decodedToken.exp && decodedToken.exp < currentTimestamp) {
+                return false;
+            }
+
+            // Additional checks can be added here, such as issuer, audience, or other claims
+
+            return true;
+        } catch (error) {
+            // If there is an error decoding or parsing the token, it's not valid
+            return false;
+        }
+    }
+
+    isLoggedIn = isJwtValid();
 </script>
 
 <div class="wrapper">
     <nav class="navbar">
-        <a href="/">
-            <img src="../img/logo.png" alt="Logo" />
+        <a href="/" id="logo">
+            <img src="http://localhost:3000/img/logo.png" alt="Logo" />
         </a>
+
+        <li class="nav-item">
+            <a class:active={active === "/"} href="/">Home</a>
+        </li>
 
         <ul class="nav-list">
             {#if isLoggedIn}
@@ -16,23 +47,33 @@
                         <img class="profile-picture" src="placeholder-user-image.jpg" alt="Profile">
                     </a>
                 </li>
-            {/if}
 
-            <li class="nav-item">
-                <a class:active={active === "/"} href="/">Home</a>
-            </li>
-            <li class="nav-item right">
-                <a class:active={active === "/login"} href="/login">Login</a>
-            </li>
-            <li class="nav-item right">
-                <a class:active={active === "/register"} href="/register">Register</a>
-            </li>
+                {:else}
+                <li class="nav-item">
+                    <a class:active={active === "/login"} href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class:active={active === "/register"} href="/register">Register</a>
+                </li>
+            {/if}
         </ul>
     </nav>
     <hr>
 </div>
 
 <style>
+    #logo img {
+        width: 100%;
+        height: auto;
+    }
+
+    #logo {
+        position: relative;
+        height: auto;
+        width: 50px;
+        margin: 10px 10px 0 10px;
+    }
+
     .wrapper {
         position: fixed;
         top: 0;
@@ -56,13 +97,8 @@
         width: 100%;
     }
 
-    .right {
-        justify-content: flex-end;
-    }
-
     .nav-list {
         list-style-type: none;
-        padding-left: 3vw;
         display: flex;
     }
 
@@ -73,6 +109,10 @@
     a {
         text-decoration: none;
         color: #fff;
+    }
+
+    li {
+        list-style-type: none;
     }
 
     a.active {

@@ -62,6 +62,8 @@ export async function getUserBids(user) {
 }
 
 export async function addAuction(auction) {
+    auction.id = auctions.length;
+    auction.bids = new Map();
     auctions.push(auction);
 }
 
@@ -93,9 +95,13 @@ export async function getAllAuctions() {
 }
 
 export async function getAuctionById(auctionId) {
-    return auctions.find(
-        (auction) => auction.id === auctionId
-    );
+    for (const auction of auctions) {
+        if (Number(auction.id) === Number(auctionId)) {
+            return auction;
+        }
+    }
+
+    return null;
 }
 
 export async function addAuctionBid(user, auctionId, bid) {
@@ -119,10 +125,6 @@ export async function addAuctionBid(user, auctionId, bid) {
     }
 
     return false; // Return false if the auction was not found.
-}
-
-export function getNextAuctionId() {
-    return auctions.length;
 }
 
 export function checkAuctionIdExists(id) {

@@ -8,16 +8,20 @@
     import Login from "./pages/Login.svelte";
 
     let page;
-    let params;
     let currentRoute;
+    let params;
 
     router('/', (ctx) => {
         page = Home;
         currentRoute = ctx.pathname;
     });
-    router('/details', (ctx) => {
+    router('/auctions/:id', (ctx) => {
+        const id = ctx.params.id;
         page = Details;
         currentRoute = ctx.pathname;
+
+        // Render the Details component and pass the "id" as a prop
+        params = { id }; // Create an object with id as a prop
     });
     router('/login', (ctx) => {
         page = Login;
@@ -34,7 +38,7 @@
 
 <main>
     <Header active={currentRoute} />
-    <svelte:component this={page} {params} />
+    <svelte:component this={page} {...params}/>
 </main>
 
 <style>

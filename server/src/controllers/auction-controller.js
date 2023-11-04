@@ -11,11 +11,11 @@ export const getAllAuctions = async (req, res) => {
 
     res
         .status(200)
-        .json(JSON.stringify(auctions));
+        .json(auctions);
 }
 
 export const getAuctionById = async (req, res) => {
-    const auction = db.getAuctionById(req.id);
+    const auction = await db.getAuctionById(req.params.id);
 
     if (!auction) {
         res
@@ -25,5 +25,5 @@ export const getAuctionById = async (req, res) => {
 
     res
         .status(200)
-        .json(JSON.stringify(auction));
+        .json(auction);
 }

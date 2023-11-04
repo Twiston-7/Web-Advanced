@@ -2,7 +2,7 @@ import * as db from "../data/database.js"
 
 export const addAuction = async (req, res) => {
     // Validate input
-    const {item, description, images} = req.body;
+    const {item, description, images, tags} = req.body;
 
     if (!item || !description) {
         res
@@ -11,7 +11,8 @@ export const addAuction = async (req, res) => {
                 message: "Either item or description is empty. Images are not mandatory. ",
                 item: item,
                 description: description,
-                images: images
+                images: images,
+                tags: tags
             });
     }
 
@@ -22,20 +23,20 @@ export const addAuction = async (req, res) => {
                 message: "Images was provided but not an array. ",
                 images: images,
                 item: item,
-                description: description
+                description: description,
+                tags: tags
             })
     }
 
-    const auctionId = db.getNextAuctionId();
     const bids = new Map();
 
     // Create auction item
     let auction = {};
-    auction.id = auctionId;
     auction.item = item;
     auction.description = description;
     auction.images = images;
     auction.bids = bids;
+    auction.tags = tags;
 
 
     // Send input to database
@@ -53,7 +54,7 @@ export const addAuction = async (req, res) => {
         // Return error message
         res
             .status(500)
-            .json(JSON.stringify(jsonObject));
+            .json(jsonObject);
     }
 
 
@@ -66,7 +67,7 @@ export const addAuction = async (req, res) => {
     // Return status
     res
         .status(201)
-        .json(JSON.stringify(jsonObject));
+        .json(jsonObject);
 }
 
 export const editAuction = async (req, res) => {
@@ -82,7 +83,7 @@ export const editAuction = async (req, res) => {
             })
     }
 
-    const {item, description, images} = req.body;
+    const {item, description, images, tags} = req.body;
 
     // Validate other input
     if (!item && !description && !images) {
@@ -92,7 +93,8 @@ export const editAuction = async (req, res) => {
                 message: "No item, description and image(s) provided. Please provide new information to edit the existing auction.",
                 item: item,
                 description: description,
-                images: images
+                images: images,
+                tags: tags
             });
     }
 
@@ -103,7 +105,8 @@ export const editAuction = async (req, res) => {
                 message: "Image(s) were provided but are not in array format. ",
                 images: images,
                 item: item,
-                description: description
+                description: description,
+                tags: tags
             })
     }
 
@@ -112,6 +115,7 @@ export const editAuction = async (req, res) => {
     auction.item = item;
     auction.description = description;
     auction.images = images;
+    auction.tags = tags;
 
     // Send input to database
     try {
@@ -129,7 +133,7 @@ export const editAuction = async (req, res) => {
         // Return error message
         res
             .status(500)
-            .json(JSON.stringify(jsonObject));
+            .json(jsonObject);
     }
 
     const jsonObject = {
@@ -139,7 +143,7 @@ export const editAuction = async (req, res) => {
 
     res
         .status(200)
-        .json(JSON.stringify(jsonObject))
+        .json(jsonObject)
 }
 
 export const deleteAuction = async (req, res) => {

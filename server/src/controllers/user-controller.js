@@ -62,7 +62,7 @@ export const getBidsForUser = async (req, res) => {
 
         res
             .status(200)
-            .json(JSON.stringify(jsonObject));
+            .json(jsonObject);
     } catch (Error) {
         console.error("Error getting bids for user: " + JSON.stringify(user))
 

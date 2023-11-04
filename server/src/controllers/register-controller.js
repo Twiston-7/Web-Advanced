@@ -5,8 +5,28 @@ import fs from "fs";
 
 const privateKey = fs.readFileSync('./src/data/private-key.pem', 'utf8');
 
+const sanitizeInput = (input) => {
+    if (typeof input !== 'string') {
+        return '';
+    }
+
+    input = input.replace(/'/g, "\\'");
+    input = input.replace(/"/g, '\\"');
+    input = input.replace(/</g, '&lt;');
+    input = input.replace(/>/g, '&gt;');
+    input = input.replace(/&/g, '&amp;');
+    input = input.replace(/'/g, '&#39;');
+    input = input.replace(/"/g, '&quot;');
+
+    return input;
+}
+
 export const registerUser = async (req, res) => {
-    const { firstName, lastName, username, email, password } = req.body;
+    const firstName = sanitizeInput(req.body.firstName);
+    const lastName = sanitizeInput(req.body.lastName);
+    const username = sanitizeInput(req.body.username);
+    const email = sanitizeInput(req.body.email);
+    const password = sanitizeInput(req.body.password);
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+/;
     const usernameRegex = /^[a-zA-Z0-9_]{4,}$/;
@@ -40,7 +60,7 @@ export const registerUser = async (req, res) => {
         const token = jwt.sign({ username }, privateKey, { algorithm: 'RS256' });
 
         // Return a successful registration and login response with the JWT token
-        res.status(201).json({ message: "Registration and login successful", token });
+        res.status(201).json({ message: "Registration and login successful", token: token });
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal server error. Please try again.");
@@ -50,7 +70,11 @@ export const registerUser = async (req, res) => {
 // A bit of a lazy method, just copied the user and used registerAdmin in db (which I also copied from the addUser)
 // Since usually I'd just manually run a sql command to register an admin.
 export const registerAdmin = async (req, res) => {
-    const { firstName, lastName, username, email, password } = req.body;
+    const firstName = sanitizeInput(req.body.firstName);
+    const lastName = sanitizeInput(req.body.lastName);
+    const username = sanitizeInput(req.body.username);
+    const email = sanitizeInput(req.body.email);
+    const password = sanitizeInput(req.body.password);
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+/;
     const usernameRegex = /^[a-zA-Z0-9_]{4,}$/;
