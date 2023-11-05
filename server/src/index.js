@@ -22,6 +22,10 @@ const createUser = async () => {
 }
 
 const createAuctions = async () => {
+    const today = new Date()
+    const tomorrow = new Date(today)
+    tomorrow.setDate(tomorrow.getDate() + 9)
+
     const auction1 = {};
     auction1.item = "sennheiser HD 600 300Ω";
     auction1.description = "The HD 600 is the audio purist’s choice for reference playback. An instrument of Sennheiser’s passion for perfect sound, it is globally recognized as the standard for analytical high-fidelity listening - even 20-plus years after its release.";
@@ -30,6 +34,7 @@ const createAuctions = async () => {
         "http://localhost:3000/img/auctions/hd600-300ohm/2.jpg",
         "http://localhost:3000/img/auctions/hd600-300ohm/3.jpg",
         "http://localhost:3000/img/auctions/hd600-300ohm/4.jpg"];
+    auction1.endDate = tomorrow;
     await db.addAuction(auction1);
 
     const auction2 = {};
@@ -37,13 +42,15 @@ const createAuctions = async () => {
     auction2.description = "Open-Back reference headphones for control and monitoring purpose.";
     auction2.tags = {brand: "beyerdynamic", design: "open-back", impedance: "32Ω"};
     auction2.images = ["http://localhost:3000/img/auctions/770-80ohm/1.jpg"];
+    auction2.endDate = tomorrow;
     await db.addAuction(auction2);
 
     const auction3 = {};
     auction3.item = "beyerdynamic DT 770 PRO 80Ω";
     auction3.description = "Closed-Back reference headphones for control and monitoring purpose. ";
-    auction3.tags = {brand: "beyerdynamic", design: "open-back", impedance: "80Ω"};
+    auction3.tags = {brand: "beyerdynamic", design: "closed-back", impedance: "80Ω"};
     auction3.images = ["http://localhost:3000/img/auctions/990-32ohm/1.jpg"];
+    auction3.endDate = tomorrow;
     await db.addAuction(auction3);
 
     const auction4 = {};
@@ -51,6 +58,7 @@ const createAuctions = async () => {
     auction4.description = "Open-Back reference headphones for control and monitoring purpose.";
     auction4.tags = {brand: "beyerdynamic", design: "open-back", impedance: "80Ω"};
     auction4.images = ["http://localhost:3000/img/auctions/990-80ohm/1.jpg"];
+    auction4.endDate = tomorrow;
     await db.addAuction(auction4);
 
     const auction5 = {};
@@ -58,6 +66,7 @@ const createAuctions = async () => {
     auction5.description = "Closed-Back reference headphones for control and monitoring purpose. ";
     auction5.tags = {brand: "beyerdynamic", design: "closed-back", impedance: "32Ω"};
     auction5.images = ["http://localhost:3000/img/auctions/770-32ohm/1.jpg"];
+    auction5.endDate = tomorrow;
     await db.addAuction(auction5);
 }
 

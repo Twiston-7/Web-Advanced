@@ -6,6 +6,7 @@
     import Details from "./pages/Details.svelte";
     import Register from "./pages/Register.svelte";
     import Login from "./pages/Login.svelte";
+    import LogOut from "./pages/LogOut.svelte";
 
     let page;
     let currentRoute;
@@ -31,6 +32,10 @@
         page = Register;
         currentRoute = ctx.pathname;
     });
+    router('/logout', (ctx) => {
+        page = LogOut;
+        currentRoute = ctx.pathname;
+    })
 
 
     router.start();

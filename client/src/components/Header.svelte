@@ -36,19 +36,18 @@
             <img src="http://localhost:3000/img/logo.png" alt="Logo" />
         </a>
 
-        <li class="nav-item">
-            <a class:active={active === "/"} href="/">Home</a>
-        </li>
-
         <ul class="nav-list">
+            <li class="nav-item">
+                <a class:active={active === "/"} href="/">Home</a>
+            </li>
+
             {#if isLoggedIn}
                 <li class="nav-item">
-                    <a href="/profile">
-                        <img class="profile-picture" src="placeholder-user-image.jpg" alt="Profile">
-                    </a>
+                    <a href="/logout">Log out</a>
                 </li>
 
                 {:else}
+
                 <li class="nav-item">
                     <a class:active={active === "/login"} href="/login">Login</a>
                 </li>
@@ -93,7 +92,7 @@
 
     hr {
         margin: 0;
-        padding: 0; /* Remove padding */
+        padding: 0;
         width: 100%;
     }
 

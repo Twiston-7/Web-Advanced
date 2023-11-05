@@ -22,15 +22,8 @@ const sanitizeInput = (input) => {
 }
 
 export const registerUser = async (req, res) => {
-    const firstName = sanitizeInput(req.body.firstName);
-    const lastName = sanitizeInput(req.body.lastName);
-    const username = sanitizeInput(req.body.username);
-    const email = sanitizeInput(req.body.email);
-    const password = sanitizeInput(req.body.password);
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+/;
     const usernameRegex = /^[a-zA-Z0-9_]{4,}$/;
-
     if (
         !firstName ||
         !lastName ||
@@ -42,6 +35,12 @@ export const registerUser = async (req, res) => {
     ) {
         return res.status(400).send("Invalid registration information");
     }
+
+    const firstName = sanitizeInput(req.body.firstName);
+    const lastName = sanitizeInput(req.body.lastName);
+    const username = sanitizeInput(req.body.username);
+    const email = sanitizeInput(req.body.email);
+    const password = sanitizeInput(req.body.password);
 
     // Check if the user already exists in the database (by username or email)
     if (db.findUser(username) || db.findUser(email)) {
@@ -56,8 +55,10 @@ export const registerUser = async (req, res) => {
         // Add the user to the database
         await db.addUser(firstName, lastName, username, email, hashedPassword);
 
+        const isAdmin = false;
+
         // Log the user in and create a JWT token
-        const token = jwt.sign({ username }, privateKey, { algorithm: 'RS256' });
+        const token = jwt.sign({ username, isAdmin }, privateKey, { algorithm: 'RS256' });
 
         // Return a successful registration and login response with the JWT token
         res.status(201).json({ message: "Registration and login successful", token: token });
@@ -104,8 +105,10 @@ export const registerAdmin = async (req, res) => {
         // Add the user to the database
         await db.addAdmin(firstName, lastName, username, email, hashedPassword);
 
+        const isAdmin = true;
+
         // Log the user in and create a JWT token
-        const token = jwt.sign({ username }, privateKey, { algorithm: 'RS256' });
+        const token = jwt.sign({ username, isAdmin }, privateKey, { algorithm: 'RS256' });
 
         // Return a successful registration and login response with the JWT token
         res.status(201).json({ message: "Registration and login successful", token: token });

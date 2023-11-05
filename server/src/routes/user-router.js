@@ -10,7 +10,7 @@ const authenticationMiddleware = (req, res, next) => {
 
 router.use("/", authenticationMiddleware);
 
-router.post("/place-bid", controller.placeBid);
+router.post("/bid", controller.placeBid);
 router.get("/bids", controller.getBidsForUser);
 
 export default router;

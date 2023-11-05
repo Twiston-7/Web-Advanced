@@ -3,9 +3,11 @@
     import Ad from "../components/Ad.svelte";
     import SmallAuction from "../components/auctions/SmallAuction.svelte";
     import SearchBar from "../components/SearchBar.svelte";
+    import Filter from "../components/Filter.svelte";
 
     export let auctions = [];
-    export let filteredAuctions = [];
+    export let searchFilteredAuctions = [];
+    export let tagFilteredAuctions = [];
 
     // Use onMount to fetch data when the component is mounted
     onMount(async () => {
@@ -15,7 +17,8 @@
             });
             if (response.ok) {
                 auctions = await response.json(); // Parse the response JSON
-                filteredAuctions = auctions;
+                tagFilteredAuctions = auctions;
+                searchFilteredAuctions = auctions;
             } else {
                 console.error("Failed to fetch data");
             }
@@ -24,9 +27,30 @@
         }
     });
 
-    export const updateAuctions = (newAuctions) => {
-        filteredAuctions = newAuctions;
+    export const updateSearchAuctions = (newAuctions) => {
+        searchFilteredAuctions = newAuctions;
     }
+
+    export const updateTagAuctions = (newAuctions) => {
+        tagFilteredAuctions = newAuctions
+    }
+
+    const extractUniqueTags = (auctions) => {
+        const tagData = {};
+        auctions.forEach(auction => {
+            for (const key in auction.tags) {
+                const value = auction.tags[key];
+                if (!tagData[key]) {
+                    tagData[key] = new Set();
+                }
+                tagData[key].add(value);
+            }
+        });
+        return tagData;
+    }
+
+    $: tags = tags = extractUniqueTags(auctions);
+    $: filteredAuctions = searchFilteredAuctions.filter(item => tagFilteredAuctions.includes(item));
 </script>
 
 <main>
@@ -40,7 +64,11 @@
     </div>
 
     <div id="search-bar">
-        <SearchBar {auctions} {updateAuctions}/>
+        <SearchBar {auctions} updateAuctions={updateSearchAuctions}/>
+    </div>
+
+    <div id="filters">
+        <Filter {auctions} updateAuctions={updateTagAuctions} tagData={tags}/>
     </div>
 
     {#if filteredAuctions}
