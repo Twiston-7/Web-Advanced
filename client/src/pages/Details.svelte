@@ -1,6 +1,7 @@
 <script>
     import { onMount } from 'svelte';
-    import { get } from 'svelte/store';
+    import * as fs from "fs";
+    import Ad from "../components/Ad.svelte";
 
     export let id;
     export let auction = null;
@@ -74,34 +75,41 @@
             const currentTimestamp = Math.floor(Date.now() / 1000);
 
             // Check if the token has not expired
-            if (decodedToken.exp && decodedToken.exp < currentTimestamp) {
-                return false;
-            }
-
-            // Additional checks can be added here, such as issuer, audience, or other claims
-
-            return true;
+            return !(decodedToken.exp && decodedToken.exp < currentTimestamp);
         } catch (error) {
             // If there is an error decoding or parsing the token, it's not valid
             return false;
         }
     }
 
-    export const submitBid = async (bid) => {
-        if (bid <= findHighestBid() + 1) {
+    export const submitBid = async () => {
+        console.log(bid);
+        const numericBid = Number(bid);
+
+        if (!Number.isSafeInteger(numericBid)) {
+            errorMessage = "Input provided is not a number. ";
+            return;
+        }
+
+        if (numericBid <= findHighestBid() + 1) {
             errorMessage = "Bid must be at least 1 euro higher than last bid.";
+            return;
         }
 
         const jwt = localStorage.getItem("token");
+        const data = {
+            "auctionId": auction.id,
+            "bid": numericBid,
+        }
 
         try {
             const response = await fetch("http://localhost:3000/user/bid", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    token: JSON.stringify(jwt),
+                    token: jwt,
                 },
-                body: JSON.stringify(bid),
+                body: JSON.stringify(data)
             });
 
             if (response.status === 200) {
@@ -168,6 +176,7 @@
             <div class="description-tags-bids">
                 <h1>{auction.item}</h1>
                 <p class="description">{auction.description}</p>
+                <Ad />
 
                 {#if auction.tags}
                     <div class="tags">
@@ -210,9 +219,11 @@
                         <div class="submit-button-container">
                             <button class="submit-button" on:click={submitBid}>Submit Bid</button>
                         </div>
+
                         {:else}
                         <p><a href="Login.svelte">Log in</a> or <a href="Register.svelte">register</a> to place a bid.</p>
                     {/if}
+                    <Ad />
                 </div>
             </div>
         </div>
@@ -288,6 +299,7 @@
     .description {
         color: var(--primary);
         max-width: 60vw;
+        margin: 0 auto 0 auto;
     }
 
     .tag-box {

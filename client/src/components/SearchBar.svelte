@@ -3,7 +3,6 @@
     export let updateAuctions;
     export let query = '';
 
-    // Create a computed property to filter auctions based on the query
     let filteredAuctions = auctions;
 
     const updateFilteredAuctions = () => {

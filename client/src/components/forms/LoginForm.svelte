@@ -42,7 +42,7 @@
                 body: JSON.stringify(sanitizedData),
             });
 
-            if (response.status === 201) {
+            if (response.status === 200) {
                 const result = await response.json();
                 localStorage.setItem("token", result.token);
 

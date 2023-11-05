@@ -34,39 +34,48 @@
         updateAuctions(filteredAuctions);
     }
 
-
     const clearTags = () => {
         selectedTags = [];
         filterByTags();
     }
+
+    const capitalizeFirstLetter = (str) => {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 </script>
 
-<div class="tag-filter">
-    {#each Object.keys(tagData) as category}
-        {#if tagData[category].size > 0}
-            <label>{category}:</label>
-            {#each Array.from(tagData[category]) as tag}
-                <label>
-                    <input type="checkbox" on:change={() => toggleTag(category, tag)} checked={selectedTags.some(selectedTag => selectedTag.category === category && selectedTag.value === tag)} />
-                    {tag}
-                </label>
-            {/each}
-        {/if}
-    {/each}
+<div class="wrapper">
+    <div class="tag-filter">
+        {#each Object.keys(tagData) as category}
+            {#if tagData[category].size > 0}
+                <div class="item">
+                    <label>{capitalizeFirstLetter(category)}:</label>
+                    {#each Array.from(tagData[category]) as tag}
+                        <label>
+                            <input type="checkbox" on:change={() => toggleTag(category, tag)} checked={selectedTags.some(selectedTag => selectedTag.category === category && selectedTag.value === tag)} />
+                            {tag}
+                        </label>
+                    {/each}
+                </div>
+            {/if}
+        {/each}
+    </div>
     <button on:click={clearTags}>Clear Filter</button>
 </div>
 
 <style>
-    .tag-filter {
-        display: flex;
-        flex-direction: column;
-        justify-content: center; /* Center vertically */
-        align-items: center; /* Center horizontally */
+    .wrapper {
         background-color: var(--secondary);
+        margin: auto; /* Center the entire component */
+        max-width: 80vw;
         padding: 10px;
         border-radius: 8px;
-        max-width: 60vw;
-        margin: auto; /* Center the entire component */
+    }
+
+    .tag-filter {
+        display: flex;
+        align-items: center; /* Center horizontally */
+        justify-content: space-around;
     }
 
     label {

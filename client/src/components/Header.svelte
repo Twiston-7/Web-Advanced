@@ -1,6 +1,8 @@
 <script>
     export let active;
     export let isLoggedIn = false;
+    export let isAdmin = false;
+    export let username = "";
 
     const isJwtValid = () => {
         const token = localStorage.getItem('token');
@@ -18,7 +20,10 @@
                 return false;
             }
 
-            // Additional checks can be added here, such as issuer, audience, or other claims
+            isAdmin = decodedToken.isAdmin;
+            username = decodedToken.username;
+            console.log(isAdmin);
+            console.log(username);
 
             return true;
         } catch (error) {

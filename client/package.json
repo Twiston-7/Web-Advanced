@@ -16,6 +16,7 @@
     "vite": "^4.4.11"
   },
   "dependencies": {
-    "page": "^1.11.6"
+    "page": "^1.11.6",
+    "jsonwebtoken": "9.0.2"
   }
 }

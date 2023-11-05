@@ -1,7 +1,7 @@
 import * as db from "../data/database.js";
 export const placeBid = async (req, res) => {
     // User is already authenticated. To be authenticated the user obviously has to exist.
-    const user = req.headers.user
+    const username = req.headers.username;
     const auctionId = req.body.auctionId;
     const bid = req.body.bid;
 
@@ -13,20 +13,22 @@ export const placeBid = async (req, res) => {
                 auctionId: auctionId,
                 bid: bid
             })
+        return;
     }
 
-    if (!auctionId || !Number.isInteger(auctionId)) {
+    if (auctionId === undefined || auctionId === null) {
         res
             .status(400)
             .json({
-                message: "No or invalid auction id provided",
+                message: "No auction id provided",
                 auctionId: auctionId,
                 bid: bid
             })
+        return;
     }
 
     try {
-        await db.addAuctionBid(user, auctionId, bid)
+        await db.addAuctionBid(username, auctionId, bid)
 
         res
             .status(200)
@@ -37,7 +39,7 @@ export const placeBid = async (req, res) => {
             })
     } catch (Error) {
         console.error("An error occurred adding auction bid for user: " + user +
-            "\nAuction id: " + auctionId + "Bid: " + bid, "\nError: " + Error);
+            "\nAuction id: " + auctionId + "\nBid: " + bid, "\nError: " + Error);
         res
             .status(500)
             .json({
@@ -49,7 +51,6 @@ export const placeBid = async (req, res) => {
 }
 
 export const getBidsForUser = async (req, res) => {
-    // User is already authenticated. To be authenticated the user obviously has to exist.
     const user = req.headers.user
 
     try {

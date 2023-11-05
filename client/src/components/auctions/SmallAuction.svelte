@@ -27,9 +27,10 @@
         align-items: center;
         background-color: var(--secondary);
         padding: 10px;
-        margin: 10px;
+        margin: 10px auto 0 auto;
         border-radius: 8px;
         cursor: pointer; /* Add a cursor style to indicate it's clickable */
+        max-width: 80vw;
     }
 
     .image {

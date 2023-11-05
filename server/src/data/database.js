@@ -104,8 +104,9 @@ export async function getAuctionById(auctionId) {
     return null;
 }
 
-export async function addAuctionBid(user, auctionId, bid) {
+export async function addAuctionBid(username, auctionId, bid) {
     let auction;
+    let user = findUser(username)
 
     for (let i = 0; i < auctions.length; i++) {
         if (auctions[i].id === auctionId) {
@@ -120,7 +121,6 @@ export async function addAuctionBid(user, auctionId, bid) {
 
         // Use the user as the key and bid as the value in the map
         auction.bids.set(user, bid);
-
         return true; // Return true if the bid was added successfully
     }
 
