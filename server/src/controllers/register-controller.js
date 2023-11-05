@@ -58,7 +58,7 @@ export const registerUser = async (req, res) => {
         const isAdmin = false;
 
         // Log the user in and create a JWT token
-        const token = jwt.sign({ username, isAdmin }, privateKey, { algorithm: 'RS256' });
+        const token = jwt.sign({ username, isAdmin }, privateKey, { algorithm: 'RS512' });
 
         // Return a successful registration and login response with the JWT token
         res.status(201).json({ message: "Registration and login successful", token: token });
@@ -108,7 +108,7 @@ export const registerAdmin = async (req, res) => {
         const isAdmin = true;
 
         // Log the user in and create a JWT token
-        const token = jwt.sign({ username, isAdmin }, privateKey, { algorithm: 'RS256' });
+        const token = jwt.sign({ username, isAdmin }, privateKey, { algorithm: 'RS512' });
 
         // Return a successful registration and login response with the JWT token
         res.status(201).json({ message: "Registration and login successful", token: token });

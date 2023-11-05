@@ -38,7 +38,7 @@ export const authenticateUser = (req, res, next) => {
     try {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
 
-        jwt.verify(token, publicKey, { algorithms: ['RS256'] }, (err, decoded) => {
+        jwt.verify(token, publicKey, { algorithms: ['RS512'] }, (err, decoded) => {
             if (err) {
                 console.error('JWT verification failed:', err);
             } else {

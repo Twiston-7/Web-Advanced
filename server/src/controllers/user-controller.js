@@ -1,6 +1,6 @@
 import * as db from "../data/database.js";
 export const placeBid = async (req, res) => {
-    // User is already authenticated. To be authenticated the user obviously has to exist.
+    // User is already authenticated. To be authenticated, the user obviously has to exist.
     const username = req.headers.username;
     const auctionId = req.body.auctionId;
     const bid = req.body.bid;

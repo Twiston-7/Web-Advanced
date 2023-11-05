@@ -50,7 +50,7 @@ export const login = async (req, res) => {
     }
 
     // Create a JWT token for the authenticated user
-    const token = jwt.sign({username}, privateKey, {algorithm: 'RS256'})
+    const token = jwt.sign({username}, privateKey, {algorithm: 'RS512'})
     // Return a successful login response with the JWT token
     res
         .status(200)
